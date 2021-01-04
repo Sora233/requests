@@ -17,6 +17,7 @@ package requests
 import (
 	"bytes"
 	"compress/gzip"
+	"context"
 	"crypto/tls"
 	"encoding/json"
 	"fmt"
@@ -79,6 +80,29 @@ func Requests() *Request {
 
 	req.Client.Jar = jar
 
+	return req
+}
+
+func RequestsWithContext(ctx context.Context) *Request {
+	req := new(Request)
+
+	req.httpreq = &http.Request{
+		Method:     "GET",
+		Header:     make(http.Header),
+		Proto:      "HTTP/1.1",
+		ProtoMajor: 1,
+		ProtoMinor: 1,
+	}
+	req.Header = &req.httpreq.Header
+	req.httpreq.Header.Set("User-Agent", "Go-Requests "+VERSION)
+
+	req.httpreq = req.httpreq.WithContext(ctx)
+
+	req.Client = &http.Client{}
+
+	jar, _ := cookiejar.New(nil)
+
+	req.Client.Jar = jar
 	return req
 }
 

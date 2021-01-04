@@ -1,11 +1,14 @@
 package requests
 
 import (
+	"context"
 	"fmt"
 	"github.com/davecgh/go-spew/spew"
+	"github.com/stretchr/testify/assert"
 	"net/http"
 	"os"
 	"testing"
+	"time"
 )
 
 func TestGet(t *testing.T) {
@@ -121,6 +124,14 @@ func TestGet(t *testing.T) {
 			fmt.Println(c.Name, c.Value)
 		}
 	}
+
+	println("Get example10")
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+
+	req = RequestsWithContext(ctx)
+	defer cancel()
+	_, err = req.Get("https://www.httpbin.org/delay/5")
+	assert.Nil(t, err)
 
 }
 
