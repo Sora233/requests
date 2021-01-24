@@ -126,7 +126,7 @@ func TestGet(t *testing.T) {
 	}
 
 	println("Get example10")
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
 
 	req = RequestsWithContext(ctx)
 	defer cancel()
