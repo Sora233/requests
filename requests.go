@@ -266,6 +266,20 @@ func (req *Request) Proxy(proxyurl string) {
 
 }
 
+func (req *Request) GetProxy() string {
+	if req.Client.Transport != nil {
+		if t, ok := req.Client.Transport.(*http.Transport); !ok {
+			return ""
+		} else if t.Proxy != nil {
+			u, err := t.Proxy(req.httpreq)
+			if err == nil {
+				return u.String()
+			}
+		}
+	}
+	return ""
+}
+
 /**************/
 func (resp *Response) ResponseDebug() {
 

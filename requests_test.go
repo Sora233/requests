@@ -133,6 +133,10 @@ func TestGet(t *testing.T) {
 	_, err = req.Get("https://www.httpbin.org/delay/5")
 	assert.Nil(t, err)
 
+	proxy := "http://127.0.0.1:8080"
+	req = Requests()
+	req.Proxy(proxy)
+	assert.Equal(t, proxy, req.GetProxy())
 }
 
 func TestPost(t *testing.T) {
